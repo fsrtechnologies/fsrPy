@@ -1,0 +1,11 @@
+INFO Start time: 4.46984183744e-006
+INFO Converting files newer than: 0.0
+INFO Processing folder: e:/transcripts/WONG-Recent
+INFO Finished with folder: e:/transcripts/WONG-Recent - time elapsed 4.2818 seconds
+INFO Processing folder: e:/transcripts/WONG-Archive
+INFO Finished with folder: e:/transcripts/WONG-Archive - time elapsed 10.5219 seconds
+INFO Processing folder: e:/transcripts/WORK-Recent
+INFO Finished with folder: e:/transcripts/WORK-Recent - time elapsed 11.2313 seconds
+INFO Processing folder: e:/transcripts/WORK-Archive
+INFO Finished with folder: e:/transcripts/WORK-Archive - time elapsed 13.4161 seconds
+INFO All done! Total files: 2  Skipped (rosters, etc.): 2  Failed: 0 - total processing time 13.7012 seconds

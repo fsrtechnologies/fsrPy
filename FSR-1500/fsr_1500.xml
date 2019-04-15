@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <npiXMLFile>file:///C:/ultramed/npiMap.XML</npiXMLFile>
+  <UCFformLength>66</UCFformLength>
+  <FIformLength>64</FIformLength>
+  <OutformLength>64</OutformLength>
+  <IncludeLegacy>True</IncludeLegacy>
+  <TopLeft>(0, 0)</TopLeft>
+  <BottomRight>(0, 0)</BottomRight>
+  <FIHist>[u'C:\Documents and Settings\Marc\Desktop\NetVista\FI_CLM01', 'E:\ultrahld\FI_CLM01.NPI', 'E:\ultrahld\FI_CLM01']</FIHist>
+  <UCFHist>[u'C:\Documents and Settings\Marc\Desktop\FSR1500', 'E:\ultrahld\report\FILE', 'E:\ultrahld\report\CLAIMS', 'C:\Documents and Settings\Marc\Desktop\FILE', 'E:\ultrahld\FI_CLM02', 'E:\ultrahld\FI_CLM01']</UCFHist>
+  <OutHist>[u'C:\Documents and Settings\Marc\Desktop\FILE2', 'E:\ultrahld\report\FILE2', 'E:\ultrahld\report\FILE1', 'E:\ultrahld\FI_CLM01.NPI', 'E:\ultrahld\report\FILE']</OutHist>
+  <LastRunUCF>True</LastRunUCF>
+  <LastRunPrinter>False</LastRunPrinter>
+  <detailLeft>0</detailLeft>
+  <detailTo>9</detailTo>
+  <detailPOS>19</detailPOS>
+  <detailCode>25</detailCode>
+  <detailMods>32</detailMods>
+  <detailDiags>44</detailDiags>
+  <detailCharge>49</detailCharge>
+  <detailUnits>58</detailUnits>
+  <detailEPSDT>62</detailEPSDT>
+  <detailEMG>22</detailEMG>
+  <detailID>67</detailID>
+  <bodyLeftBlock>0</bodyLeftBlock>
+  <bodyMidBlock>24</bodyMidBlock>
+  <bodyRightBlock>49</bodyRightBlock>
+  <bodyLabelEdge>40</bodyLabelEdge>
+  <ConfirmSuccess></ConfirmSuccess>
+</config>

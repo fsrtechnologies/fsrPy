@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{686eff04-14ff-4698-a3b7-82f00b737a5a}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>Apax.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Apax.py" />
+    <Compile Include="configobj.py" />
+    <Compile Include="crib\crib.pyw" />
+    <Compile Include="crib\deck.py" />
+    <Compile Include="FSR-1500\fsr1500.pyw" />
+    <Compile Include="FSR-1500\setup.py" />
+    <Compile Include="FSR-Email\fsr_email.pyw" />
+    <Compile Include="FSR-Email\setup.py" />
+    <Compile Include="FSR-Labels\patExporter.pyw" />
+    <Compile Include="FSR-Labels\patLabelsbyEntry.pyw" />
+    <Compile Include="FSR-Labels\pat_labels.py" />
+    <Compile Include="FSR-Labels\recalls.pyw" />
+    <Compile Include="FSR-Labels\refLabels.pyw" />
+    <Compile Include="FSR-Labels\ref_labels.py" />
+    <Compile Include="FSR-Labels\selector.pyw" />
+    <Compile Include="FSR-Labels\time_exp.pyw" />
+    <Compile Include="FSR-NPI\Copy of npi_update.pyw" />
+    <Compile Include="FSR-NPI\setup.py" />
+    <Compile Include="fsr1500.pyw" />
+    <Compile Include="fsrRSP.pyw" />
+    <Compile Include="fsrStuff\cms1500.pyw" />
+    <Compile Include="fsrStuff\ConfigFile.pyw" />
+    <Compile Include="fsrStuff\defs1500.pyw" />
+    <Compile Include="fsrStuff\Labels.pyw" />
+    <Compile Include="fsrStuff\mcrCodes.pyw" />
+    <Compile Include="fsrStuff\NPIFile.amara.pyw" />
+    <Compile Include="fsrStuff\NPIFile.pyw" />
+    <Compile Include="fsrStuff\SortCheck.pyw" />
+    <Compile Include="fsrStuff\SortList.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Ailment.py" />
+    <Compile Include="fsrStuff\umFuncs\Appointment.py" />
+    <Compile Include="fsrStuff\umFuncs\CPA.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Diagnosis.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Doctor.pyw" />
+    <Compile Include="fsrStuff\umFuncs\ExtendedDiag.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Facility.pyw" />
+    <Compile Include="fsrStuff\umFuncs\GeneralAccounts.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Group.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Insurance.pyw" />
+    <Compile Include="fsrStuff\umFuncs\InsuranceType.pyw" />
+    <Compile Include="fsrStuff\umFuncs\InsuredParty.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Laboratory.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Message.pyw" />
+    <Compile Include="fsrStuff\umFuncs\NewPatient.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Note.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Office.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Patient.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Procedure.pyw" />
+    <Compile Include="fsrStuff\umFuncs\ReferralSource.pyw" />
+    <Compile Include="fsrStuff\umFuncs\ScheduleMaster.pyw" />
+    <Compile Include="fsrStuff\umFuncs\StatementParams.pyw" />
+    <Compile Include="fsrStuff\umFuncs\TLAList.pyw" />
+    <Compile Include="fsrStuff\umFuncs\Transaction.pyw" />
+    <Compile Include="fsrStuff\umFuncs\utils.pyw" />
+    <Compile Include="fsrStuff\umFuncs\__init__.py" />
+    <Compile Include="fsrStuff\X12\Carrier.py" />
+    <Compile Include="fsrStuff\X12\CodeFinder.pyw" />
+    <Compile Include="fsrStuff\X12\GenPDFSet.py" />
+    <Compile Include="fsrStuff\X12\rsp_code.pyw" />
+    <Compile Include="fsrStuff\X12\TA1.pyw" />
+    <Compile Include="fsrStuff\X12\X12GSLoop.py" />
+    <Compile Include="fsrStuff\X12\X12STLoop.py" />
+    <Compile Include="fsrStuff\X12\X12Thing.py" />
+    <Compile Include="fsrStuff\X12\X12Utils.py" />
+    <Compile Include="fsrStuff\X12\X12_277.py" />
+    <Compile Include="fsrStuff\X12\X12_835.py" />
+    <Compile Include="fsrStuff\X12\X12_837.py" />
+    <Compile Include="fsrStuff\X12\X12_999.py" />
+    <Compile Include="fsrStuff\X12\__init__.py" />
+    <Compile Include="fsrStuff\x12_defs.pyw" />
+    <Compile Include="fsrStuff\__init__.py" />
+    <Compile Include="fsr_x12.pyw" />
+    <Compile Include="get-pip.py" />
+    <Compile Include="kamList.pyw" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\bz2.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\unicodedata.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._aui.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._controls_.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._core_.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._gdi_.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._misc_.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._stc.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\wx._windows_.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\_hashlib.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\_socket.py" />
+    <Compile Include="knigi\build\bdist.win32\winexe\temp\_ssl.py" />
+    <Compile Include="knigi\knigi.pyw" />
+    <Compile Include="knigi\setup.py" />
+    <Compile Include="npi_update.pyw" />
+    <Compile Include="patExporter.pyw" />
+    <Compile Include="rtfStuff\cvt-all.py" />
+    <Compile Include="rtfStuff\rtfCopy.py" />
+    <Compile Include="rtfStuff\RTFdirs.py" />
+    <Compile Include="selector.pyw" />
+    <Compile Include="setup.py" />
+    <Compile Include="src\images.py" />
+    <Compile Include="src\ol.py" />
+    <Compile Include="src\ol2.py" />
+    <Compile Include="src\pat_lists.py" />
+    <Compile Include="src\thread.py" />
+    <Compile Include="src\trnTest.pyw" />
+    <Compile Include="src\X12Stuff.py" />
+    <Compile Include="subPrimeXML\sPxml.pyw" />
+    <Compile Include="try_ras.py" />
+    <Compile Include="validate.py" />
+    <Compile Include="x12CLI.py" />
+    <Compile Include="zip9_chk.pyw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FSR-1500\.hg\last-message.txt" />
+    <Content Include="FSR-1500\fsr_1500.ini" />
+    <Content Include="FSR-NPI\npi_upd.ini" />
+    <Content Include="fsrRSP.ini" />
+    <Content Include="fsrStuff\npi_upd.ini" />
+    <Content Include="fsr_1500.ini" />
+    <Content Include="fsr_x12.ini" />
+    <Content Include="npi_upd.ini" />
+    <Content Include="pat_exp.ini" />
+    <Content Include="subPrimeXML\sPxml.ini" />
+    <Content Include="zip9_chk.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="crib" />
+    <Folder Include="FSR-1500" />
+    <Folder Include="FSR-1500\.hg" />
+    <Folder Include="FSR-Email" />
+    <Folder Include="FSR-Labels" />
+    <Folder Include="FSR-NPI" />
+    <Folder Include="fsrStuff" />
+    <Folder Include="fsrStuff\umFuncs" />
+    <Folder Include="fsrStuff\X12" />
+    <Folder Include="knigi" />
+    <Folder Include="knigi\build\" />
+    <Folder Include="knigi\build\bdist.win32\" />
+    <Folder Include="knigi\build\bdist.win32\winexe\" />
+    <Folder Include="knigi\build\bdist.win32\winexe\temp" />
+    <Folder Include="rtfStuff" />
+    <Folder Include="src" />
+    <Folder Include="subPrimeXML" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

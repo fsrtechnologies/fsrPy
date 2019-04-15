@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npiList>
+  <npiItem legacyType="SSN">
+    <legacyCode>000458017</legacyCode>
+    <NPI>BOGOSITY10</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>A54670</legacyCode>
+    <NPI>1629073044</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>A54670</legacyCode>
+    <NPI>1629073044</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00A546700</legacyCode>
+    <NPI>1629073044</NPI>
+  </npiItem>
+  <npiItem legacyType="BlueShieldID">
+    <legacyCode>00A546700</legacyCode>
+    <NPI>1629073044</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>G48123</legacyCode>
+    <NPI>1629073044</NPI>
+  </npiItem>
+  <npiItem legacyType="EIN">
+    <legacyCode>201719093</legacyCode>
+    <NPI>1992739957</NPI>
+  </npiItem>
+  <npiItem legacyType="EIN">
+    <legacyCode>201880665</legacyCode>
+    <NPI>1750470134</NPI>
+  </npiItem>
+  <npiItem legacyType="EIN">
+    <legacyCode>522458017</legacyCode>
+    <NPI>1700095817</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>C41527</legacyCode>
+    <NPI>1225057904</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>00C415271</legacyCode>
+    <NPI>1225057904</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00C415270</legacyCode>
+    <NPI>1225057904</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>A88253</legacyCode>
+    <NPI>1225057904</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>WC41527A</legacyCode>
+    <NPI>1225057904</NPI>
+  </npiItem>
+  <npiItem legacyType="OtherID2">
+    <legacyCode>5115022</legacyCode>
+    <NPI>1225057904</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>A55465</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>WA55465A</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00A554650</legacyCode>
+    <NPI>1700095817</NPI>
+  </npiItem>
+  <npiItem legacyType="BlueShieldID">
+    <legacyCode>8594029</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>G33366</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="OtherID1">
+    <legacyCode>05D0951696</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="OtherID2">
+    <legacyCode>B4X</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>A53626</legacyCode>
+    <NPI>1992739957</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>WA53626K</legacyCode>
+    <NPI>1992739957</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>0A0536260</legacyCode>
+    <NPI>1366477333</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>G43061</legacyCode>
+    <NPI>1366477333</NPI>
+  </npiItem>
+  <npiItem legacyType="OtherID1">
+    <legacyCode>9739636</legacyCode>
+    <NPI>1366477333</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>A70174</legacyCode>
+    <NPI>1942348693</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>WA70174B</legacyCode>
+    <NPI>1942348693</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00A701740</legacyCode>
+    <NPI>1750470134</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>I11375</legacyCode>
+    <NPI>1942348693</NPI>
+  </npiItem>
+  <npiItem legacyType="OtherID2">
+    <legacyCode>1569236</legacyCode>
+    <NPI>1942348693</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>A55465</legacyCode>
+    <NPI>1245291574</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>A38818</legacyCode>
+    <NPI>1538147566</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>A88475</legacyCode>
+    <NPI>1538147566</NPI>
+  </npiItem>
+  <npiItem legacyType="EIN">
+    <legacyCode>954183114</legacyCode>
+    <NPI>1538147566</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>W19670</legacyCode>
+    <NPI>1821027541</NPI>
+  </npiItem>
+  <npiItem legacyType="EIN">
+    <legacyCode>510564800</legacyCode>
+    <NPI>1821027541</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>HSC30126F</legacyCode>
+    <NPI>1033133103</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00A388181</legacyCode>
+    <NPI>1821027541</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00A388180</legacyCode>
+    <NPI>1538147566</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>WA38818C</legacyCode>
+    <NPI>1538147566</NPI>
+  </npiItem>
+  <npiItem legacyType="EIN">
+    <legacyCode>954422240</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="License">
+    <legacyCode>A46373</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicareID">
+    <legacyCode>A46373</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="MedicaidID">
+    <legacyCode>00A463732</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="UPIN">
+    <legacyCode>E60827</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="BlueCrossID">
+    <legacyCode>A46373</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="BlueCrossID">
+    <legacyCode>40040</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+  <npiItem legacyType="OtherID1">
+    <legacyCode>1720010234</legacyCode>
+    <NPI>1720010234</NPI>
+  </npiItem>
+</npiList>

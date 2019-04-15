@@ -1,0 +1,2 @@
+
+TLAList = ["AIL","APP","CPA","DEP","DIA","DOC","EDM","EXA","EXD","EXL","EXM","FAC","FST","GAA","HOS","IND","INM","INQ","INS","INV","ITT","LAB","MCL","MED","MEN","MEU","MLR","NEW","NOT","PAT","PHA","PRC","PRO","REC","REF","RPT","RVS","SSM","STA","SUP","TRD","TRN","TRT","UID","VAL"]

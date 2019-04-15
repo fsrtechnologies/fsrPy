@@ -1,0 +1,304 @@
+import wx, string, sys, os, amara, re, wx.lib.inspection, csv
+from   fsrStuff.umFuncs import *
+from   fsrStuff.ConfigFile import *
+import Ft.Lib.Uri as uri
+import  wx.lib.scrolledpanel as scrolled
+
+class Global:
+    """Generic container for shared variables."""
+    cfgFileName = os.getcwd() + os.sep + 'fsr_email.xml'
+    cfgFile = ConfigFile(cfgFileName, "directDat","emlListFile")
+
+class Log:
+    """Log output is redirected to the status bar of the containing frame.
+    """
+    def WriteText(self,text_string):
+        self.write(text_string)
+    def write(self,text_string):
+        wx.GetApp().GetTopWindow().SetStatusText(text_string)
+
+class ConfigFrame(wx.Frame):
+    def __init__(self, parent, id, title, size, style = wx.DEFAULT_FRAME_STYLE ):
+        wx.Frame.__init__(self, parent, id, title, size=size, style=style)
+        self.CreateStatusBar(1)
+        self.log=Log()
+        
+        pnl = wx.Panel(self)
+        boxOuter = wx.BoxSizer(wx.VERTICAL)
+        boxOuter.Add(wx.StaticText(pnl, -1, "           Needful things:"), 0, wx.ALIGN_TOP)
+        
+        boxInner2a = wx.BoxSizer(wx.HORIZONTAL)
+        boxInner2a.Add(wx.StaticText(pnl, -1, "UltraMed data directory file:"), 0, wx.ALIGN_CENTER_VERTICAL)
+        self.log.write("Email list file: %s" % str(Global.cfgFile.emlListFile))
+        boxOuter.Add(boxInner2a, 1, wx.ALIGN_CENTER | wx.ALIGN_BOTTOM)
+
+        boxInner2b = wx.BoxSizer(wx.HORIZONTAL)
+        fpDDat = wx.FilePickerCtrl(pnl, message = 'Select DIRECT.DAT in your UltraMed directory', 
+                                   wildcard = 'direct.dat', path = uri.UriToOsPath(str(Global.cfgFile.directDat))) 
+        boxInner2b.Add(fpDDat, wx.ALIGN_CENTER)
+        boxOuter.Add(boxInner2b, 1, wx.ALIGN_CENTER | wx.ALIGN_TOP)
+        self.Bind(wx.EVT_FILEPICKER_CHANGED, self.OnPickDirectDat, fpDDat)
+
+        boxInner3a = wx.BoxSizer(wx.HORIZONTAL)
+        boxInner3a.Add(wx.StaticText(pnl, -1, "Email list file:"), 0, wx.ALIGN_CENTER_VERTICAL)
+        self.log.write("Email list file: %s" % str(Global.cfgFile.emlListFile))
+        boxOuter.Add(boxInner3a, 1, wx.ALIGN_CENTER | wx.ALIGN_BOTTOM)
+        
+        if (Global.cfgFile.emlListFile == ''):
+            self.emlListFile = os.getcwd() + os.sep + 'emails.txt'
+        else:
+            self.emlListFile = uri.UriToOsPath(str(Global.cfgFile.emlListFile))    
+
+        boxInner3b = wx.BoxSizer(wx.HORIZONTAL)
+        fpXML = wx.FilePickerCtrl(pnl, message = 'Select the file to hold the list of email addresses', 
+                                  wildcard = "TXT files (*.txt)|*.txt", path = self.emlListFile, 
+                                  style = wx.FLP_OPEN | wx.FLP_USE_TEXTCTRL)
+        
+        
+        boxInner3b.Add(fpXML, wx.ALIGN_CENTER)
+        boxOuter.Add(boxInner3b, 1, wx.ALIGN_CENTER | wx.ALIGN_TOP)
+        self.Bind(wx.EVT_FILEPICKER_CHANGED, self.OnPickEmailFile, fpXML)
+
+        boxInner4 = wx.BoxSizer(wx.HORIZONTAL)
+        IDs = [wx.ID_SAVE, wx.ID_CANCEL]
+        for ID in IDs:
+            b = wx.Button(pnl, ID)
+            boxInner4.Add(b, 0, wx.ALL, 5)
+            self.Bind(wx.EVT_BUTTON, self.OnClickCfg, b)
+        boxOuter.Add(boxInner4, 1, wx.ALIGN_CENTER | wx.ALIGN_BOTTOM)
+        pnl.SetSizer(boxOuter)
+
+    def OnPickDirectDat(self, evt):
+        Global.cfgFile.directDat       = unicode(uri.OsPathToUri(evt.GetPath()))
+        self.log.write("Directory file for UltraMed data: %s" % str(Global.cfgFile.directDat))
+        
+    def OnPickEmailFile(self, evt):
+        Global.cfgFile.emlListFile                = unicode(uri.OsPathToUri(evt.GetPath()))
+        self.log.write("Email list file: %s" % str(Global.cfgFile.emlListFile))
+        
+    def OnClickCfg(self, event):
+        btn = event.GetId() 
+        if (btn == wx.ID_SAVE):
+            if not ((len(str(Global.cfgFile.directDat)) > 10) and os.path.exists(uri.UriToOsPath(str(Global.cfgFile.directDat)))):
+                dlg = wx.MessageDialog(self, "You didn't tell me where to find the UltraMed data.  Try again!",
+                            "Naughty, naughty!", wx.OK | wx.ICON_INFORMATION)
+                dlg.ShowModal()
+                dlg.Destroy()
+                return
+            if not (len(str(Global.cfgFile.emlListFile)) > 6): 
+                dlg = wx.MessageDialog(self, "You didn't tell me where to save the email addresses.  Try again!",
+                            "Naughty, naughty!", wx.OK | wx.ICON_INFORMATION)
+                dlg.ShowModal()
+                dlg.Destroy()
+                return
+            if (self.emlListFile == Global.cfgFileName): 
+                dlg = wx.MessageDialog(self, "You're trying to over-write the configuration file for this program.  Choose another file!",
+                            "Naughty, naughty!", wx.OK | wx.ICON_INFORMATION)
+                dlg.ShowModal()
+                dlg.Destroy()
+                return
+            if not os.path.exists(uri.UriToOsPath(str(Global.cfgFile.emlListFile))): 
+                dlg = wx.MessageDialog(self, "The email file you specified doesn't exist (yet).  Should I create it?",
+                            "Create a new file?", wx.YES_NO | wx.ICON_QUESTION)
+                response = dlg.ShowModal()
+                dlg.Destroy()
+                if (response == wx.ID_NO): return
+                emlFile = open(uri.UriToOsPath(str(Global.cfgFile.emlListFile)), 'w+b')
+                emlFile.close()
+            Global.cfgFile.Save()
+            Global.cfgDone = 1
+        else:
+            Global.cfgDone = 2
+        self.Destroy()
+        event.Skip()
+class ConfigApp(wx.App):
+    def OnInit(self):
+        f = ConfigFrame(None, -1, "FSR Email - Configuration",wx.Size(400,220))
+        f.Show()            
+        return True
+
+#class myPanel(wx.Panel):
+class myPanel(scrolled.ScrolledPanel):
+#----------------------------------------------------------------------
+# The guts of the main operation...
+#----------------------------------------------------------------------
+    def __init__(self, parent,log):
+        #wx.Panel.__init__( self, parent, -1)
+        scrolled.ScrolledPanel.__init__(self, parent, -1)
+        self.log=log
+        
+        boxOuter = wx.BoxSizer(wx.VERTICAL)
+
+        cutoff          = 100
+        count           = 0
+        block           = 0
+        addylist        = {}
+        boxInner1b      = {}
+        self.textbox    = {}
+        self.copybutton = {}
+        addylist[block] = ""
+
+        Global.emailList.sort()
+        for addy in Global.emailList: 
+            addylist[block] = addylist[block] + addy[0] + ", "
+            count+=1
+            if ((count % cutoff) == 0):
+                block+=1
+                addylist[block] = ""
+        writer = csv.writer(open(uri.UriToOsPath(str(Global.cfgFile.emlListFile)), "wb"), quoting = csv.QUOTE_ALL)
+        writer.writerows(Global.emailList)
+
+        
+        boxInner1a = wx.BoxSizer(wx.HORIZONTAL)
+        boxInner1a.Add(wx.StaticText(self, -1, "    Patient email addresses - %s total" % count), 0, wx.ALIGN_CENTER_VERTICAL)
+        boxOuter.Add(boxInner1a, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
+
+        for num, bunch in addylist.iteritems():
+            if len(bunch) < 2: continue
+            boxInner1b[num] = wx.BoxSizer(wx.HORIZONTAL)
+            self.textbox[num] = wx.TextCtrl(self, -1, bunch, size=(-1, -1), style=wx.TE_BESTWRAP|wx.TE_MULTILINE)
+            self.copybutton[num] = wx.Button(self, id=num, label='%s - Copy to clipboard' % (num+1), size=wx.Size(150,30))
+            self.Bind(wx.EVT_BUTTON, self.OnClickCopy, self.copybutton[num])
+
+            boxInner1b[num].Add((10, 10))
+            boxInner1b[num].Add(self.textbox[num], 10,  wx.EXPAND)
+            boxInner1b[num].Add((10, 10))
+            boxInner1b[num].Add(self.copybutton[num])
+            boxInner1b[num].Add((10, 10))
+            boxOuter.Add(boxInner1b[num], 2, wx.ALIGN_LEFT | wx.ALIGN_TOP| wx.EXPAND|wx.ALL)
+            boxOuter.Add((10, 10))
+
+        self.SetSizer(boxOuter)
+        self.SetAutoLayout(1)
+        self.SetupScrolling()
+        self.log.write('Ready to start copying addresses to Outlook - remember to use the Bcc: field!')
+
+    
+    def OnClickCopy(self, event):
+        num = event.GetId() 
+        self.textbox[num].SetSelection(-1,-1)
+        self.textbox[num].Copy()
+        self.log.write('Contents of box number %s ready to paste' % (num+1))
+
+class myFrame(wx.Frame):
+    def __init__(self, parent, id, title, size, style = wx.DEFAULT_FRAME_STYLE ):
+        wx.Frame.__init__(self, parent, id, title, size=size, style=style)
+        self.CreateStatusBar(1)
+        log=Log()
+        self.win = myPanel(self, log)
+
+class MyApp(wx.App):
+    def OnInit(self):
+        f = myFrame(None, -1, "FSR_Email - Email list grabber utility",wx.Size(800,600))
+        f.Show()            
+        return True
+
+class SplashFrame(wx.Frame):
+    def __init__(self, parent, id, title, size, style = wx.DEFAULT_FRAME_STYLE ):
+        wx.Frame.__init__(self, parent, id, title, size=size, style=style)
+        self.CreateStatusBar(1)
+        self.log=Log()
+        self.jobID = 0
+
+        pnl = wx.Panel(self)
+        boxOuter = wx.BoxSizer(wx.VERTICAL)
+        
+        boxInner1 = wx.BoxSizer(wx.HORIZONTAL)
+        boxInner1.Add(wx.StaticText(pnl, -1, "Loading UltraMed data from:    %s" % str(Global.cfgFile.directDat)), 0, wx.ALIGN_CENTER_VERTICAL)
+        boxOuter.Add(boxInner1, 1, wx.ALIGN_CENTER | wx.ALIGN_TOP)
+
+        boxInner3 = wx.BoxSizer(wx.HORIZONTAL)
+        self.btnCancel = wx.Button(pnl, -1, "Cancel")
+        self.Bind(wx.EVT_BUTTON, self.handleCancel, self.btnCancel)
+
+        boxInner3.Add(self.btnCancel, 0, wx.ALL, 5)
+        boxOuter.Add(boxInner3, 1, wx.ALIGN_CENTER | wx.ALIGN_TOP)
+        pnl.SetSizer(boxOuter)
+
+        self.btnCancel.Enable(True)
+        
+        Global.TLDList = (".ac",".ad",".ae",".af",".ag",".ai",".al",".am",".an",".ao",".aq",".ar",".as",".at",".au",".aw",".ax",".az",".ba",".bb",".bd",".be",".bf",".bg",".bh",".bi",".bj",".bl",".bm",".bn",".bo",".br",".bs",".bt",".bv",".bw",".by",".bz",".ca",".cc",".cd",".cf",".cg",".ch",".ci",".ck",".cl",".cm",".cn",".co",".cr",".cu",".cv",".cx",".cy",".cz",".de",".dj",".dk",".dm",".do",".dz",".ec",".ee",".eg",".eh",".er",".es",".et",".eu",".fi",".fj",".fk",".fm",".fo",".fr",".ga",".gb",".gd",".ge",".gf",".gg",".gh",".gi",".gl",".gm",".gn",".gp",".gq",".gr",".gs",".gt",".gu",".gw",".gy",".hk",".hm",".hn",".hr",".ht",".hu",".id",".ie",".il",".im",".in",".io",".iq",".ir",".is",".it",".je",".jm",".jo",".jp",".ke",".kg",".kh",".ki",".km",".kn",".kp",".kr",".kw",".ky",".kz",".la",".lb",".lc",".li",".lk",".lr",".ls",".lt",".lu",".lv",".ly",".ma",".mc",".md",".me",".mf",".mg",".mh",".mk",".ml",".mm",".mn",".mo",".mp",".mq",".mr",".ms",".mt",".mu",".mv",".mw",".mx",".my",".mz",".na",".nc",".ne",".nf",".ng",".ni",".nl",".no",".np",".nr",".nu",".nz",".om",".pa",".pe",".pf",".pg",".ph",".pk",".pl",".pm",".pn",".pr",".ps",".pt",".pw",".py",".qa",".re",".ro",".rs",".ru",".rw",".sa",".sb",".sc",".sd",".se",".sg",".sh",".si",".sj",".sk",".sl",".sm",".sn",".so",".sr",".st",".su",".sv",".sy",".sz",".tc",".td",".tf",".tg",".th",".tj",".tk",".tl",".tm",".tn",".to",".tp",".tr",".tt",".tv",".tw",".tz",".ua",".ug",".uk",".um",".us",".uy",".uz",".va",".vc",".ve",".vg",".vi",".vn",".vu",".wf",".ws",".ye",".yt",".yu",".za",".zm",".zw",".aero",".asia",".biz",".cat",".com",".coop",".info",".jobs",".mobi",".museum",".name",".net",".org",".pro",".tel",".travel",".gov",".edu",".mil",".int")
+        Global.serialID = 0
+        self.loadDirect()
+        self.loadNotes()
+        self.loadPatients()
+        Global.dataLoaded = True
+        self.Close(True)
+
+    def emailCheck(self, inStr):
+        for tmpStr in inStr.split():
+            #print tmpStr
+            if tmpStr.find('@')>1:
+                if tmpStr.find(':')>1:  #some entries start with 'email: '
+                    tmpStr = tmpStr.split(':')[1]
+                tmpStr = tmpStr.lower()
+                if tmpStr.endswith(Global.TLDList):
+                    return tmpStr            
+        return False
+        
+    def loadDirect(self):
+        print "loadDirect"
+        Global.offices = parseDirectDat(uri.UriToOsPath(str(Global.cfgFile.directDat[0])))
+        #Global.patients = {}
+        #Global.notes = {}
+
+    def loadNotes(self):
+        self.log.write('Loading addresses from notes file...')
+        for num, off in Global.offices.iteritems():
+            for obj in RecordGenerator(off, "Note"):
+                if len(obj.ChartNumber)>1: 
+                    match = self.emailCheck(obj.Text)
+                    if match:
+                        Global.emailList.append((match, obj.ChartNumber))
+
+    def loadPatients(self):
+        self.log.write('Loading addresses from patient file...')
+        for num, off in Global.offices.iteritems():
+            for obj in RecordGenerator(off, "Insurance"):
+                for testStr in (obj.Message1, obj.Message2):
+                    if (len(testStr)>1):
+                        match = self.emailCheck(testStr)
+                        if match:
+                            Global.emailList.append((match, obj.ChartNumber))
+                                
+    def handleCancel(self, event): 
+        self.Close(True)
+        exit()
+        
+class SplashApp(wx.App):
+    def OnInit(self):
+        splash = SplashFrame(None, -1, "FSR Email - loading data, please wait...",wx.Size(400,200))
+        splash.Show()
+        return True
+
+#===============================================================================================
+#      Where it all begins...
+#===============================================================================================
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+    Global.cfgFile.Load()
+
+    if not (os.path.exists(str(Global.cfgFileName)) and os.path.exists(uri.UriToOsPath(str(Global.cfgFile.directDat))) and os.path.exists(uri.UriToOsPath(str(Global.cfgFile.emlListFile)))):
+        Global.cfgDone = False
+        app = ConfigApp(0)
+        app.MainLoop()
+        if (Global.cfgDone == 2):
+            dlg = wx.MessageDialog(None, "I can't go on like this!  Try again, and next time tell me what I need to know!",
+                            "Abort! Abort!", wx.OK | wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
+            exit()
+
+    Global.emailList   = []
+    Global.dataLoaded               = False
+    sploosh = SplashApp(0)
+    sploosh.MainLoop()
+    if not Global.dataLoaded: exit()
+    app = MyApp(0)
+    #wx.lib.inspection.InspectionTool().Show()
+    app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()

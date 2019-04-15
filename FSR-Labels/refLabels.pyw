@@ -1,0 +1,237 @@
+from __future__ import with_statement
+from time import strftime
+import wx, sys, os
+import  wx.lib.scrolledpanel as scrolled
+import Ft.Lib.Uri as uri
+#===These are mine: =====
+from fsrStuff.Labels import *
+from fsrStuff.ConfigFile import *
+from fsrStuff.SortCheck import *
+from fsrStuff.umFuncs import *
+from win32com.shell import shell
+try:
+    import cStringIO
+    StringIO = cStringIO
+except ImportError:
+    import StringIO
+
+class Global:
+    """Generic container for shared variables."""
+    pass
+
+class Log:
+    """Log output is redirected to the status bar of the containing frame."""
+    def __init__(self):
+        with open(os.getcwd() + os.sep + 'labels.log', 'w') as logfile:
+            logfile.write('Let the games begin....' + '\n')
+        
+    def WriteText(self,text_string):
+        self.write(text_string)
+    def write(self,text_string, fileOnly=False):
+        with open(os.getcwd() + os.sep + 'labels.log', 'a+') as logfile:
+            logfile.write(text_string + '\n')
+        if not fileOnly: 
+            wx.GetApp().GetTopWindow().SetStatusText(text_string)
+
+
+class Selector(wx.Frame):
+    def __init__(self, parent, id, title, size=(550,500)):
+        wx.Frame.__init__(self, parent, id, title, size)
+        self.CreateStatusBar(1)
+        self.log = Log()
+        panel = wx.Panel(self, -1)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+
+        leftPanel = wx.Panel(panel, -1)
+        self.rightPanel = wx.Panel(panel, -1)
+
+        #============================================================
+        # Gettin' the data, nom nom nom
+        self.loadDirect()
+        self.loadReferrals()
+        #============================================================
+
+        tipString = '''
+        We'll get statistics based on charges between the Start Date and the End Date. 
+        To get all charges UP TO a certain date, leave the Start Date un-checked.
+        To get all charges SINCE a certain date, leave the End Date un-checked.
+        To get all charges, EVER, leave both dates un-checked.'''
+        self.dpcStart = wx.DatePickerCtrl(leftPanel, size=(120,-1), style=wx.DP_DROPDOWN | wx.DP_SHOWCENTURY | wx.DP_ALLOWNONE)
+        self.dpcStart.SetToolTipString(tipString)
+        self.dpcEnd   = wx.DatePickerCtrl(leftPanel, size=(120,-1), style=wx.DP_DROPDOWN | wx.DP_SHOWCENTURY | wx.DP_ALLOWNONE)
+        self.dpcEnd.SetToolTipString(tipString)
+
+        self.list = SortedCheckList(self.rightPanel, self.FreshList())
+        self.list.SetToolTipString("Select insurance companies")
+
+        btnSelect   = wx.Button(leftPanel, -1, 'Select All', size=(100, -1))
+        btnDeSel    = wx.Button(leftPanel, -1, 'Deselect All', size=(100, -1))
+        btnGetStats = wx.Button(leftPanel, -1, 'Get Statistics', size=(100, -1))
+        btnLabels   = wx.Button(leftPanel, -1, 'Print Labels', size=(100, -1))
+
+
+        self.Bind(wx.EVT_BUTTON, self.OnSelectAll, id=btnSelect.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnDeselectAll, id=btnDeSel.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnGetStats, id=btnGetStats.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnBtnLabels, id=btnLabels.GetId())
+
+        vboxL = wx.BoxSizer(wx.VERTICAL)
+        vboxL.Add(btnSelect, 0, wx.TOP, 5)
+        vboxL.Add(btnDeSel)
+        vboxL.Add((0,0),1)   # empty space to separate groups of buttons
+        vboxL.Add(wx.StaticText(leftPanel, -1, "Start date:"))
+        vboxL.Add(self.dpcStart)
+        vboxL.Add(wx.StaticText(leftPanel, -1, "End date:"))
+        vboxL.Add(self.dpcEnd)  
+        vboxL.Add(btnGetStats)
+        vboxL.Add((0,0),2)   # empty space to separate groups of buttons
+        vboxL.Add(btnLabels)
+        vboxL.Add((0,0),1)   # empty space to keep second group off the floor
+
+        leftPanel.SetSizer(vboxL)
+
+        self.vboxR = wx.BoxSizer(wx.VERTICAL)
+        self.vboxR.Add(self.list, 1, wx.EXPAND | wx.TOP, 3)
+        self.rightPanel.SetSizer(self.vboxR)
+
+        hbox.Add(leftPanel, 0, wx.EXPAND | wx.RIGHT, 5)
+        hbox.Add(self.rightPanel, 1, wx.EXPAND)
+        hbox.Add((3, -1))
+
+        panel.SetSizer(hbox)
+
+        self.Centre()
+        self.Show(True)
+
+    def OnSelectAll(self, event):
+        num = self.list.GetItemCount()
+        for i in range(num):
+            self.list.CheckItem(i)
+
+    def OnDeselectAll(self, event):
+        num = self.list.GetItemCount()
+        for i in range(num):
+            self.list.CheckItem(i, False)
+
+    def OnBtnLabels(self, event):
+        
+        self.log.write('Printing labels...')
+        
+        GoodFile = Avery5160(Global.d_top + os.sep + 'GoodLabels.pdf')
+        BadFile = Avery5160(Global.d_top + os.sep + 'BadLabels.pdf')
+
+        good_labels_out = 0
+        bad_labels_out = 0
+        for i in range(self.list.GetItemCount()):
+            if self.list.IsChecked(i):
+                refID = self.list.GetItem(i,0).Text
+                if (refID in Global.Refs):
+                    ref = Global.Refs[refID]
+                    if ((ref.Zip[:5]=='99999') or (ref.Zip[:5]=='99998') or (ref.Zip[:5]=='00000')):
+                        BadFile.Add(ref)
+                        bad_labels_out +=1
+                    else:
+                        GoodFile.Add(ref)
+                        good_labels_out+=1
+
+        #=======================================================================================================================================
+        #   and... loop!
+
+        GoodFile.Print()
+        BadFile.Print()
+        
+        self.log.write('Finished printing %s good labels and %s bad labels.' % (good_labels_out, bad_labels_out))
+
+
+    def loadDirect(self):
+        Global.offices = parseDirectDat(uri.UriToOsPath(str(Global.cfgFile.directDat[0])))
+        Global.Refs = {}
+        Global.Charges = {}
+        Global.Pats = []
+
+    def loadReferrals(self):
+        for num, off in Global.offices.iteritems():
+            for obj in RecordGenerator(off, "ReferralSource"):
+                obj.Pats = 0
+                obj.Charges = 0
+                Global.Refs[obj.ID] = obj
+        
+    def FreshList(self):
+        refList = []
+        header = ['Code', 'Name', 'Pats', 'Charges']
+        refList.append(header)
+        for code, obj in Global.Refs.iteritems():
+            line = [code, obj.Name, obj.Pats, obj.Charges]
+            refList.append(line)
+        return refList
+        
+    def OnGetStats(self, event):
+        self.log.write('Getting patient and charge statistics for selected date range...')
+        PatCharge = {}
+        Global.Pats = []
+
+        dateStart = self.dpcStart.GetValue()
+        dateEnd = self.dpcEnd.GetValue()
+        if not dateStart.IsValid(): dateStart = wx.DateTimeFromDMY(1,0,1)
+        if not dateEnd.IsValid(): dateEnd = wx.DateTimeFromDMY(30,12,9999)
+        if dateEnd.IsEarlierThan(dateStart):
+            dateStart = self.dpcStart.SetValue(dateEnd)
+        prettyStart = wx.DateTime.Format(dateStart, '%m/%d/%Y')
+        prettyEnd = wx.DateTime.Format(dateEnd, '%m/%d/%Y')
+        dateStart = wx.DateTime.Format(dateStart, '%Y%m%d')
+        dateEnd = wx.DateTime.Format(dateEnd, '%Y%m%d')
+        self.log.write("Making table of charges between %s  and %s ..." % (prettyStart, prettyEnd))
+        self.loadCharges(dateStart, dateEnd) # create dictionary of patients and charge totals
+        self.log.write("Looking up patients, to associate charges with referrals...")
+        self.loadPatients()
+        self.log.write("Finished loading statistics for date range: %s  to %s." % (prettyStart, prettyEnd))
+        self.rightPanel.Hide()
+        self.list.Destroy()
+        self.list = SortedCheckList(self.rightPanel, self.FreshList())
+        self.vboxR.Add(self.list, 1, wx.EXPAND | wx.TOP, 3)
+        self.rightPanel.SetSizer(self.vboxR)
+        self.rightPanel.Layout()
+        self.rightPanel.Show()
+
+
+    def loadCharges(self, dateStart, dateEnd):
+        for num, off in Global.offices.iteritems():
+            for obj in RecordGenerator(off, "Transaction"):
+                if ((obj.KeyType=='C') and not (obj.ExtChg)):
+                    if (dateStart <= obj.Date <= dateEnd):
+                        if obj.ChartNumber in Global.Charges: # if we already have a running total for this patient, add to it
+                            Global.Charges[obj.ChartNumber] += obj.ChargeCents / 100.0
+                        else:  # otherwise, start one
+                            Global.Charges[obj.ChartNumber] = obj.ChargeCents / 100.0
+        
+    def loadPatients(self):
+        for num, off in Global.offices.iteritems():
+            for obj in RecordGenerator(off, "Patient"):
+                if obj.ChartNumber in Global.Charges: # if this patient had some charges in the date range
+                    if obj.ReferredBy in Global.Refs:
+                        Global.Refs[obj.ReferredBy].Pats += 1  # add one to the referral source's patient count
+                        Global.Refs[obj.ReferredBy].Charges += Global.Charges[obj.ChartNumber] # add this patient's charges to the ref's total
+        
+class MyApp(wx.App):
+    def OnInit(self):
+        frame = Selector(None, -1, "Referral Source Labels by Statistics", size=(550,500))
+        frame.Show()
+        return True
+
+#===============================================================================================
+#      Where it all begins...
+#===============================================================================================
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+    Global.cfgFileName              = os.getcwd() + os.sep + 'fsr_labels.xml'
+    Global.cfgFile   = ConfigFile(Global.cfgFileName, "directDat")
+    Global.cfgFile.Load()
+    Global.d_top = shell.SHGetSpecialFolderPath(0, 0x0010)
+
+    app = MyApp(0)
+    app.MainLoop()
+
+if __name__ == '__main__':
+    main()
